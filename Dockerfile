@@ -13,6 +13,12 @@ RUN apt-get update && \
     apt-get install -y libxml2-dev
 RUN docker-php-ext-install soap
 
+RUN apt-get update && apt-get install --yes --no-install-recommends \
+    libssl-dev
+
+RUN pecl install mongodb \
+    && docker-php-ext-enable mongodb
+
 #upload
 RUN echo "file_uploads = On\n" \
          "memory_limit = 500M\n" \
