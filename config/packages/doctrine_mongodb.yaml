@@ -4,7 +4,9 @@ doctrine_mongodb:
     connections:
         default:
             server: '%env(resolve:MONGODB_URL)%'
-            options: {}
+            options: 
+                username: '%env(MONGODB_USERNAME)%'
+                password: '%env(MONGODB_PASSWORD)%'
     default_database: '%env(resolve:MONGODB_DB)%'
     document_managers:
         default:
