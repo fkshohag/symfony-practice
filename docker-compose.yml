@@ -1,0 +1,51 @@
+version: "3.5"
+services:
+  app:
+    build: .
+    container_name: symfony_app
+    working_dir: /var/www/symfonyapp
+    depends_on:
+      - db
+    networks:
+      - symfonynet
+    volumes:
+      - .:/var/www/symfonyapp
+
+  webserver:
+    image: nginx:1.15
+    container_name: symfony_nginx
+    working_dir: /var/www/symfonyapp
+    depends_on: 
+      - app
+    networks:
+      - symfonynet
+    ports:
+      - 3202:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+  db:
+    image: mysql:8.0
+    container_name: symfony_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - symfonynet
+    volumes:
+      - ./db_store/conversation:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=symfony
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=symfony@admin
+
+  db_client:
+    image: adminer
+    container_name: symfony_adminer
+    ports:
+      - 3203:8080
+    networks:
+      - symfonynet
+
+networks:
+  symfonynet:
+    driver: bridge
