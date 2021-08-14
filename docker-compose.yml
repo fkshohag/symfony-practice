@@ -5,7 +5,7 @@ services:
     container_name: symfony_app
     working_dir: /var/www/symfonyapp
     depends_on:
-      - db
+      - mongodb
     networks:
       - symfonynet
     volumes:
