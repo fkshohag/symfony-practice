@@ -32,6 +32,8 @@ services:
       - symfonynet
     volumes:
       - ./db_store/conversation:/var/lib/mysql
+    ports:
+      - 3307:3306
     environment:
       - MYSQL_DATABASE=symfony
       - MYSQL_ROOT_PASSWORD=root
