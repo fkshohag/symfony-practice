@@ -10,3 +10,4 @@
 ###< symfony/framework-bundle ###
 
 /db_store
+/mongo-data

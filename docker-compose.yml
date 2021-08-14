@@ -40,6 +40,36 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=symfony@admin
 
+  mongodb:
+      image: mongo:3.2.7
+      container_name: symfony_mongodb
+      volumes:
+        - ./mongo-data:/data/db
+      ports:
+        - "27017:27017"
+      environment:
+        - MONGO_INITDB_DATABASE=test
+        - MONGO_INITDB_ROOT_USERNAME=admin
+        - MONGO_INITDB_ROOT_PASSWORD=admin
+      networks:
+        - symfonynet
+
+  mongoclient:
+    image: mongoclient/mongoclient:latest
+    container_name: my-mongoclient
+    environment:
+      - MONGO_SERVER=my-mongodb
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    networks:
+      - symfonynet
+    depends_on:
+      - mongodb
+    hostname: mongoclient
+    ports:
+        - 3300:3000
+
   db_client:
     image: adminer
     container_name: symfony_adminer
